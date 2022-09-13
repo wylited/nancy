@@ -11,7 +11,7 @@ import (
 // const (
 // 	checking Account = "checking"
 // 	savings  Account = "savings"
-// 	credit   Account = "credit card"
+// 	card     Account = "card"
 // 	invest   Account = "investment"
 // 	mortage  Account = "mortage"
 // 	other    Account = "other"
