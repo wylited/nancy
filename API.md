@@ -9,7 +9,6 @@
 ### Parameters and return values
 
 - Endpoint: `http://127.0.0.1:6806`
-- Both are POST methods
 - An interface with parameters is required, the parameter is a JSON string, placed in the body, and the header
   Content-Type is `application/json`
 - Return value
@@ -377,4 +376,18 @@
 
 ### Update transaction
 
-> To be completed
+- `/api/transaction/updateTransaction`
+- paramaters
+
+```json
+{
+  "trans_id": "x"
+  "acc_id": "x",
+  "date": "2022-01-01",
+  "payee": "Pizza Hut",
+  "credit": 502.2,
+  "debit": 0,
+  "notes": "2 pineapple pizzas.",
+  "category": "food",
+  "cleared": true
+}

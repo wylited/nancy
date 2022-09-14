@@ -17,6 +17,11 @@ import (
 // 	other    Account = "other"
 // )
 
+// Make a config file for these two.
+// possibly using viper.
+const uri = "x"
+const port = "8080"
+
 type Nancy struct {
 	uri    string
 	port   string
@@ -34,6 +39,6 @@ func nancyInit(uri string, port string) *Nancy {
 }
 
 func main() {
-	nancy := nancyInit("mongodb://localhost:27017", "8080")
+	nancy := nancyInit(uri, port)
 	nancy.gin.Run(nancy.port)
 }
