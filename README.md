@@ -1,3 +1,5 @@
+<Nancy will be going on hiatus for a while, due to me not being sure what exactly to implement>
+
 # nancy
 A personal, local first Finance Management System (FMS). Designed to help an average human being track their spendings and recognize habits
 
