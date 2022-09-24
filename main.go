@@ -40,5 +40,6 @@ func nancyInit(uri string, port string) *Nancy {
 
 func main() {
 	nancy := nancyInit(uri, port)
+	initApi(nancy.gin, nancy.client)
 	nancy.gin.Run(nancy.port)
 }

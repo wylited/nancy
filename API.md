@@ -163,8 +163,28 @@
 }
 ```
 
+### Get account type
+- `/api/account/getAccountType`
+- parameters
 
-### Change account type 
+```json
+{
+  "name": "x"
+}
+```
+- return value
+
+```json
+{
+  "code": 0,
+  "msg": "",
+  "data": {
+    "type": "checking"
+  }
+}
+```
+
+### Update account type 
 
 - `/api/account/changeAccountType`
 - parameters
@@ -209,7 +229,7 @@
 }
 ```
 
-### update account balance
+### Update account balance
 
 - `/api/account/updateAccountBalance`
 - parameters
@@ -218,28 +238,6 @@
 {
   "name": "x",
   "balance": 175.2
-}
-```
-
-- return value
-
-```json
-{
-  "code": 0,
-  "msg": "",
-  "data": {}
-}
-```
-
-### Update account name
-
-- `/api/account/updateAccountName`
-- parameters
-
-```json
-{
-  "name": "x",
-  "newname": "HSBC"
 }
 ```
 
