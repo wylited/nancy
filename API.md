@@ -64,6 +64,31 @@
 }
 ```
 
+### Get account
+- `/api/account/getAccount`
+- parameters
+
+```json
+{
+  "name": "x"
+}
+```
+
+- return value
+
+```json
+{
+  "code": 0,
+  "msg": "",
+  "data": {
+    "_id": { "$oid": "x" },
+    "name": "HSBC",
+    "type": "checking",
+    "balance": { "$numberDecimal": "175.20" }
+  }
+}
+```
+
 ### Add account
 
 - `/api/account/addAccount`
@@ -101,7 +126,7 @@
 
 ```json
 {
-  "acc_id": "x"
+  "name": "x"
 }
 ```
 
@@ -115,14 +140,13 @@
 }
 ```
 
-### Change account
+### Update account
 
-- `/api/account/changeAccount`
+- `/api/account/updateAccount`
 - parameters
 
 ```json
 {
-  "acc_id": "x",
   "name": "HSBC",
   "type": "checking",
   "balance": 175.2
@@ -139,37 +163,15 @@
 }
 ```
 
-### Get account type
 
-- `/api/account/getAccountType`
-- parameters
-
-```json
-{
-  "acc_id": "x"
-}
-```
-
-- return value
-
-```json
-{
-  "code": 0,
-  "msg": "",
-  "data": {
-    "type": "checking"
-  }
-}
-```
-
-### Change account type
+### Change account type 
 
 - `/api/account/changeAccountType`
 - parameters
 
 ```json
 {
-  "acc_id": "x",
+  "name": "x",
   "type": "checking"
 }
 ```
@@ -191,7 +193,7 @@
 
 ```json
 {
-  "acc_id": "x"
+  "name": "x"
 }
 ```
 
@@ -207,14 +209,14 @@
 }
 ```
 
-### Change account balance
+### update account balance
 
-- `/api/account/changeAccountBalance`
+- `/api/account/updateAccountBalance`
 - parameters
 
 ```json
 {
-  "acc_id": "x",
+  "name": "x",
   "balance": 175.2
 }
 ```
@@ -229,38 +231,15 @@
 }
 ```
 
-### Get account name
+### Update account name
 
-- `/api/account/getAccountName`
+- `/api/account/updateAccountName`
 - parameters
 
 ```json
 {
-  "acc_id": "x"
-}
-```
-
-- return value
-
-```json
-{
-  "code": 0,
-  "msg": "",
-  "data": {
-    "name": "HSBC"
-  }
-}
-```
-
-### Change account name
-
-- `/api/account/changeAccountName`
-- parameters
-
-```json
-{
-  "acc_id": "x",
-  "name": "HSBC"
+  "name": "x",
+  "newname": "HSBC"
 }
 ```
 
