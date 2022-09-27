@@ -25,7 +25,4 @@ func initApi(r *gin.Engine, m *mongo.Client) {
 	//api/
 	//accounts/
 	//lsAccounts/
-	r.GET("/api/accounts/lsAccounts", func(c *gin.Context) {
-		c.JSON(http.StatusOK, listAccounts(m))
-	})
 }

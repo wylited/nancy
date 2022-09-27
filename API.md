@@ -15,17 +15,17 @@
       - [Update account type](#Update-account-type)
     - [Delete account](#Delete-account)
 - [Transactions](#Transactions)
-    - [List transactions](#List-transactions)
-    - [Get transaction](#Get-transaction)
-    - [Add transaction](#Add-transaction)
-    - [Update transaction](#Update-transaction)
-        - [Update transaction date](#Update-transaction-date)
-        - [Update transaction amount](#Update-transaction-amount)
-        - [Update transaction description](#Update-transaction-description)
-        - [Update transaction account](#Update-transaction-account)
-        - [Update transaction category](#Update-transaction-category)
-        - [Update transaction type](#Update-transaction-type)
-    - [Delete transaction](#Delete-transaction)
+  - [List transactions](#List-transactions)
+  - [Get transaction](#Get-transaction)
+  - [Add transaction](#Add-transaction)
+  - [Update transaction](#Update-transaction)
+    - [Update transaction date](#Update-transaction-date)
+    - [Update transaction amount](#Update-transaction-amount)
+    - [Update transaction description](#Update-transaction-description)
+    - [Update transaction account](#Update-transaction-account)
+    - [Update transaction category](#Update-transaction-category)
+    - [Update transaction type](#Update-transaction-type)
+  - [Delete transaction](#Delete-transaction)
 
 ---
 
@@ -50,7 +50,8 @@
   }
   ```
   - `code`: non-zero for exceptions.
-  - `msg`: an empty string under normal circumstances, an error text will be returned under abnormal conditions.
+  - `msg`: an empty string under normal circumstances, an error text will be
+    returned under abnormal conditions.
   - `data`: may be {}, [] or NULL.
 
 ## Authentication
@@ -114,6 +115,11 @@
   }
   ```
 
+### Get account sugar
+
+- `/api/accounts/{name}/type`
+- `/api/accounts/{name}/balance`
+
 ## Add account
 
 - `/api/accounts`
@@ -147,46 +153,13 @@
 
 ## Update account
 
-### Update account name
-
-- CURRENTLY UNAVAILABLE
-
-### Update account type
-
-- `/api/accounts/{name}/type`
+- `/api/accounts/{name}`
 - Parameters
 
   ```json
   {
-    "type": "checking"
-  }
-  ```
-
-  - request type: PATCH
-
-- Return value
-  ```json
-  {
-    "code": 0,
-    "msg": "",
-    "data": {
-      "account": {
-        "id": { "$oid": "x" },
-        "name": "HSBC",
-        "type": "checking",
-        "balance": { "$numberDecimal": "175.20" }
-      }
-    }
-  }
-  ```
-
-### Update account balance
-
-- `/api/accounts/{name}/balance`
-- Parameters
-
-  ```json
-  {
+    "name": "HSBC",
+    "type": "checking",
     "balance": { "$numberDecimal": "175.20" }
   }
   ```
@@ -357,6 +330,16 @@
     }
   }
   ```
+## Get transaction sugar
+
+- `/api/transactions/{id}/account`
+- `/api/transactions/{id}/date`
+- `/api/transactions/{id}/payee`
+- `/api/transactions/{id}/credit`
+- `/api/transactions/{id}/debit`
+- `/api/transactions/{id}/notes`
+- `/api/transactions/{id}/category`
+- `/api/transactions/{id}/cleared`
 
 ## Add transaction
 
@@ -400,6 +383,7 @@
   ```
 
 ## Update transaction
+
 - `/api/transactions/{id}`
 - Parameters
 
@@ -438,239 +422,19 @@
     }
   }
   ```
+## Update transaction sugar
 
-### Update transaction date
+- `/api/transactions/{id}/account`
 - `/api/transactions/{id}/date`
-- Parameters
-
-  ```json
-  {
-    "date": { "$date": { "$numberLong": "1646755230000" } }
-  }
-  ```
-
-  - request type: PUT
-
-- Return value
-  ```json
-  {
-    "code": 0,
-    "msg": "",
-    "data": {
-      "transaction": {
-        "_id": { "$oid": "63136a58d301518b82e6c72f" },
-        "account": "HSBC",
-        "date": { "$date": { "$numberLong": "1646755230000" } },
-        "payee": "Microsoft",
-        "credit": { "$numberDecimal": "0" },
-        "debit": { "$numberDecimal": "52000" },
-        "notes": "Monthly Income",
-        "category": "income",
-        "cleared": false
-      }
-    }
-  }
-  ```
-
-### Update transaction payee
 - `/api/transactions/{id}/payee`
-- Parameters
-
-  ```json
-  {
-    "payee": "Microsoft"
-  }
-  ```
-
-  - request type: PUT
-
-- Return value
-  ```json
-  {
-    "code": 0,
-    "msg": "",
-    "data": {
-      "transaction": {
-        "_id": { "$oid": "63136a58d301518b82e6c72f" },
-        "account": "HSBC",
-        "date": { "$date": { "$numberLong": "1646755230000" } },
-        "payee": "Microsoft",
-        "credit": { "$numberDecimal": "0" },
-        "debit": { "$numberDecimal": "52000" },
-        "notes": "Monthly Income",
-        "category": "income",
-        "cleared": false
-      }
-    }
-  }
-  ```
-
-### Update transaction credit
 - `/api/transactions/{id}/credit`
-- Parameters
-
-  ```json
-  {
-    "credit": { "$numberDecimal": "0" }
-  }
-  ```
-
-  - request type: PUT
-
-- Return value
-  ```json
-  {
-    "code": 0,
-    "msg": "",
-    "data": {
-      "transaction": {
-        "_id": { "$oid": "63136a58d301518b82e6c72f" },
-        "account": "HSBC",
-        "date": { "$date": { "$numberLong": "1646755230000" } },
-        "payee": "Microsoft",
-        "credit": { "$numberDecimal": "0" },
-        "debit": { "$numberDecimal": "52000" },
-        "notes": "Monthly Income",
-        "category": "income",
-        "cleared": false
-      }
-    }
-  }
-  ```
-
-### Update transaction debit
 - `/api/transactions/{id}/debit`
-- Parameters
-
-  ```json
-  {
-    "debit": { "$numberDecimal": "52000" }
-  }
-  ```
-
-  - request type: PUT
-
-- Return value
-  ```json
-  {
-    "code": 0,
-    "msg": "",
-    "data": {
-      "transaction": {
-        "_id": { "$oid": "63136a58d301518b82e6c72f" },
-        "account": "HSBC",
-        "date": { "$date": { "$numberLong": "1646755230000" } },
-        "payee": "Microsoft",
-        "credit": { "$numberDecimal": "0" },
-        "debit": { "$numberDecimal": "52000" },
-        "notes": "Monthly Income",
-        "category": "income",
-        "cleared": false
-      }
-    }
-  }
-  ```
-
-### Update transaction notes
 - `/api/transactions/{id}/notes`
-- Parameters
-
-  ```json
-  {
-    "notes": "Monthly Income"
-  }
-  ```
-
-  - request type: PUT
-
-- Return value
-  ```json
-  {
-    "code": 0,
-    "msg": "",
-    "data": {
-      "transaction": {
-        "_id": { "$oid": "63136a58d301518b82e6c72f" },
-        "account": "HSBC",
-        "date": { "$date": { "$numberLong": "1646755230000" } },
-        "payee": "Microsoft",
-        "credit": { "$numberDecimal": "0" },
-        "debit": { "$numberDecimal": "52000" },
-        "notes": "Monthly Income",
-        "category": "income",
-        "cleared": false
-      }
-    }
-  }
-  ```
-
-### Update transaction category
 - `/api/transactions/{id}/category`
-- Parameters
-
-  ```json
-  {
-    "category": "income"
-  }
-  ```
-
-  - request type: PUT
-
-- Return value
-  ```json
-  {
-    "code": 0,
-    "msg": "",
-    "data": {
-      "transaction": {
-        "_id": { "$oid": "63136a58d301518b82e6c72f" },
-        "account": "HSBC",
-        "date": { "$date": { "$numberLong": "1646755230000" } },
-        "payee": "Microsoft",
-        "credit": { "$numberDecimal": "0" },
-        "debit": { "$numberDecimal": "52000" },
-        "notes": "Monthly Income",
-        "category": "income",
-        "cleared": false
-      }
-    }
-  }
-  ```
-
-### Update transaction cleared
 - `/api/transactions/{id}/cleared`
-- Parameters
-
-  ```json
-  {
-    "cleared": false
-  }
-  ```
-
-  - request type: PUT
-
-- Return value
-  ```json
-  {
-    "code": 0,
-    "msg": "",
-    "data": {
-      "transaction": {
-        "_id": { "$oid": "63136a58d301518b82e6c72f" },
-        "account": "HSBC",
-        "date": { "$date": { "$numberLong": "1646755230000" } },
-        "payee": "Microsoft",
-        "credit": { "$numberDecimal": "0" },
-        "debit": { "$numberDecimal": "52000" },
-        "notes": "Monthly Income",
-        "category": "income",
-        "cleared": false
-      }
-    }
-  }
-  ```
 
 ### Delete transaction
+
 - `/api/transactions/{id}`
 - Parameters
 
@@ -696,4 +460,3 @@
     }
   }
   ```
-  

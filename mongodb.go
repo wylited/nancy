@@ -96,6 +96,17 @@ func addAccount(client *mongo.Client, account Account) {
 	}
 }
 
+// updateAccount updates an account in the database
+// Can't update the name of the account
+func updateAccount(client *mongo.Client, name string, account Account) {
+	accounts := client.Database("configuration").Collection("accounts")
+
+	if _, err := accounts.UpdateOne(context.TODO(), bson.M{"name": name}, bson.M{"$set": account}); err != nil {
+		log.Fatal(err)
+	}
+}
+
+
 // deleteAccount deletes an account from the database
 func deleteAccount(client *mongo.Client, name string) {
 	accounts := client.Database("configuration").Collection("accounts")
@@ -108,38 +119,4 @@ func deleteAccount(client *mongo.Client, name string) {
 	if err := client.Database("accounts").Collection(name).Drop(context.TODO()); err != nil {
 		log.Fatal(err)
 	}
-}
-
-// updateAccount updates an account in the database
-// Can't update the name of the account
-func updateAccount(client *mongo.Client, name string, account Account) {
-	accounts := client.Database("configuration").Collection("accounts")
-
-	if _, err := accounts.UpdateOne(context.TODO(), bson.M{"name": name}, bson.M{"$set": account}); err != nil {
-		log.Fatal(err)
-	}
-}
-
-// getAccountatype returns the atype of an account
-func getAccountatype(client *mongo.Client, name string) atype {
-	accounts := client.Database("configuration").Collection("accounts")
-
-	var account Account
-	if err := accounts.FindOne(context.TODO(), bson.M{"name": name}).Decode(&account); err != nil {
-		log.Fatal(err)
-	}
-
-	return account.Type
-}
-
-// getAccountBalance returns the balance of an account
-func getAccountBalance(client *mongo.Client, name string) string {
-	accounts := client.Database("configuration").Collection("accounts")
-
-	var account Account
-	if err := accounts.FindOne(context.TODO(), bson.M{"name": name}).Decode(&account); err != nil {
-		log.Fatal(err)
-	}
-
-	return account.Balance
 }
