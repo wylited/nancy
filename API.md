@@ -1,370 +1,699 @@
-# Explanation of the Gin http API for Nancy.
+# Index
 
-## Index (TBD)
+- [Index](#index)
+  - [Specification](#specifaction)
+    - [Parameters and return values](#parameters-and-return-values)
+    - [Authentication](#authentication)
+  - [Accounts](#accounts)
+    - [List accounts](#List-accounts)
+    - [Get account](#Get-account)
+    - [Add account](#Add-account)
+    - [Update an account](#Update-account)
+      - [Update account name](#Update-account-name)
+      - [Update account type](#Update-account-type)
+      - [Update account balance](#Update-account-balance)
+      - [Update account type](#Update-account-type)
+    - [Delete account](#Delete-account)
+- [Transactions](#Transactions)
+    - [List transactions](#List-transactions)
+    - [Get transaction](#Get-transaction)
+    - [Add transaction](#Add-transaction)
+    - [Update transaction](#Update-transaction)
+        - [Update transaction date](#Update-transaction-date)
+        - [Update transaction amount](#Update-transaction-amount)
+        - [Update transaction description](#Update-transaction-description)
+        - [Update transaction account](#Update-transaction-account)
+        - [Update transaction category](#Update-transaction-category)
+        - [Update transaction type](#Update-transaction-type)
+    - [Delete transaction](#Delete-transaction)
 
 ---
 
-## Specification
+# Specification
 
-### Parameters and return values
+## Parameters and return values
 
-- Endpoint: `http://127.0.0.1:6806`
-- An interface with parameters is required, the parameter is a JSON string, placed in the body, and the header
-  Content-Type is `application/json`
+- Parameters
+
+  - Request Type
+    - GET
+    - POST
+    - DELETE
+    - PATCH
+
 - Return value
+  ```json
+  {
+      "code": 0,
+      "msg": "",
+      "data"
+  }
+  ```
+  - `code`: non-zero for exceptions.
+  - `msg`: an empty string under normal circumstances, an error text will be returned under abnormal conditions.
+  - `data`: may be {}, [] or NULL.
 
+## Authentication
+
+- TODO
+
+# Accounts
+
+## List accounts
+
+- `/api/lsAccounts`
+- Parameters
+
+  - no parameters
+  - request type: GET
+
+- Return value
   ```json
   {
     "code": 0,
     "msg": "",
-    "data": {}
+    "data": {
+      "accounts": [
+        {
+          "id": { "$oid": "x" },
+          "name": "HSBC",
+          "type": "checking",
+          "balance": { "$numberDecimal": "175.20" }
+        },
+        {
+          "id": { "$oid": "x" },
+          "name": "Credit Mastercard",
+          "type": "card",
+          "balance": { "$numberDecimal": "584.20" }
+        }
+      ]
+    }
   }
   ```
 
-  - `code`: non-zero for exceptions
-  - `msg`: an empty string under normal circumstances, an error text will be returned under abnormal conditions
-  - `data`: may be `{}`, `[]` or `NULL`, depending on the interface
+## Get account
 
-### Authentication
+- `/api/accounts/{name}`
+- Parameters
 
-> to be implemented
+  - request type: GET
 
----
-
-## Accounts
-
----
-
-### List accounts
-
-- `/api/account/lsAccounts`
-- no parameters
-- return value
-
-```json
-{
-  "code": 0,
-  "msg": "",
-  "data": {
-    "accounts": [
-      {
-        "_id": { "$oid": "x" },
+- Return value
+  ```json
+  {
+    "code": 0,
+    "msg": "",
+    "data": {
+      "account": {
+        "id": { "$oid": "x" },
         "name": "HSBC",
         "type": "checking",
         "balance": { "$numberDecimal": "175.20" }
-      },
-      {
-        "_id": { "$oid": "x" },
-        "name": "Credit Mastercard",
-        "type": "card",
-        "balance": { "$numberDecimal": "584.20" }
       }
-    ]
+    }
   }
-}
-```
+  ```
 
-### Get account
-- `/api/account/getAccount`
-- parameters
+## Add account
 
-```json
-{
-  "name": "x"
-}
-```
+- `/api/accounts`
+- Parameters
 
-- return value
-
-```json
-{
-  "code": 0,
-  "msg": "",
-  "data": {
-    "_id": { "$oid": "x" },
+  ```json
+  {
     "name": "HSBC",
     "type": "checking",
     "balance": { "$numberDecimal": "175.20" }
   }
-}
-```
+  ```
 
-### Add account
+  - request type: POST
 
-- `/api/account/addAccount`
-- parameters
-
-```json
-{
-  "name": "HSBC",
-  "type": "checking",
-  "balance": 175.2
-}
-```
-
-- return value
-
-```json
-{
-  "code": 0,
-  "msg": "",
-  "data": {
-    "account": {
-      "_id": { "$oid": "x" },
-      "name": "HSBC",
-      "type": "checking",
-      "balance": { "$numberDecimal": "175.20" }
+- Return value
+  ```json
+  {
+    "code": 0,
+    "msg": "",
+    "data": {
+      "account": {
+        "id": { "$oid": "x" },
+        "name": "HSBC",
+        "type": "checking",
+        "balance": { "$numberDecimal": "175.20" }
+      }
     }
   }
-}
-```
+  ```
 
-### Remove account
+## Update account
 
-- `/api/account/rmAccount`
-- parameters
+### Update account name
 
-```json
-{
-  "name": "x"
-}
-```
+- CURRENTLY UNAVAILABLE
 
-- return value
+### Update account type
 
-```json
-{
-  "code": 0,
-  "msg": "",
-  "data": {}
-}
-```
+- `/api/accounts/{name}/type`
+- Parameters
 
-### Update account
-
-- `/api/account/updateAccount`
-- parameters
-
-```json
-{
-  "name": "HSBC",
-  "type": "checking",
-  "balance": 175.2
-}
-```
-
-- return value
-
-```json
-{
-  "code": 0,
-  "msg": "",
-  "data": {}
-}
-```
-
-### Get account type
-- `/api/account/getAccountType`
-- parameters
-
-```json
-{
-  "name": "x"
-}
-```
-- return value
-
-```json
-{
-  "code": 0,
-  "msg": "",
-  "data": {
+  ```json
+  {
     "type": "checking"
   }
-}
-```
+  ```
 
-### Update account type 
+  - request type: PATCH
 
-- `/api/account/changeAccountType`
-- parameters
-
-```json
-{
-  "name": "x",
-  "type": "checking"
-}
-```
-
-- return value
-
-```json
-{
-  "code": 0,
-  "msg": "",
-  "data": {}
-}
-```
-
-### Get account balance
-
-- `/api/account/getAccountBalance`
-- parameters
-
-```json
-{
-  "name": "x"
-}
-```
-
-- return value
-
-```json
-{
-  "code": 0,
-  "msg": "",
-  "data": {
-    "balance": { "$numberDecimal": "175.20" }
+- Return value
+  ```json
+  {
+    "code": 0,
+    "msg": "",
+    "data": {
+      "account": {
+        "id": { "$oid": "x" },
+        "name": "HSBC",
+        "type": "checking",
+        "balance": { "$numberDecimal": "175.20" }
+      }
+    }
   }
-}
-```
+  ```
 
 ### Update account balance
 
-- `/api/account/updateAccountBalance`
-- parameters
+- `/api/accounts/{name}/balance`
+- Parameters
 
-```json
-{
-  "name": "x",
-  "balance": 175.2
-}
-```
-
-- return value
-
-```json
-{
-  "code": 0,
-  "msg": "",
-  "data": {}
-}
-```
-
----
-
-## Transactions
-
-> To implement, filtering based on price or time.
-
-### List transactions
-
-- `/api/transaction/lsTransactions`
-- parameters
-
-```json
-{
-  "acc_id": "x"
-}
-```
-
-- return value
-
-```json
-{
-  "code": 0,
-  "msg": "",
-  "data": {
-    "transactions": [
-      {
-        "_id": { "$oid": "x" },
-        "date": { "$date": { "$numberLong": "1646755200000" } },
-        "payee": "Pizza Hut",
-        "credit": { "$numberDecimal": "502.20" },
-        "debit": { "$numberDecimal": "0" },
-        "notes": "2 pineapple pizzas.",
-        "category": "food",
-        "cleared": true
-      }
-    ]
+  ```json
+  {
+    "balance": { "$numberDecimal": "175.20" }
   }
-}
-```
+  ```
 
-### New transaction
+  - request type: PATCH
 
-- `/api/transaction/newTransaction`
-- parameters
-
-```json
-{
-  "acc_id": "x",
-  "date": "2022-01-01",
-  "payee": "Pizza Hut",
-  "credit": 502.2,
-  "debit": 0,
-  "notes": "2 pineapple pizzas.",
-  "category": "food",
-  "cleared": true
-}
-```
-
-- return value
-
-```json
-{
-  "code": 0,
-  "msg": "",
-  "data": {
-    "transaction": {
-      "_id": { "$oid": "x" },
-      "date": { "$date": { "$numberLong": "1646755200000" } },
-      "payee": "Pizza Hut",
-      "credit": { "$numberDecimal": "502.20" },
-      "debit": { "$numberDecimal": "0" },
-      "notes": "2 pineapple pizzas.",
-      "category": "food",
-      "cleared": true
+- Return value
+  ```json
+  {
+    "code": 0,
+    "msg": "",
+    "data": {
+      "account": {
+        "id": { "$oid": "x" },
+        "name": "HSBC",
+        "type": "checking",
+        "balance": { "$numberDecimal": "175.20" }
+      }
     }
   }
-}
-```
+  ```
 
-### Remove transaction
+## Delete account
 
-- `/api/transaction/rmTransaction`
-- parameters
+- `/api/accounts/{name}`
+- Parameters
 
-```json
-{
-  "trans_id": "x"
-}
-```
+  - request type: DELETE
 
-- return value
+- Return value
+  ```json
+  {
+    "code": 0,
+    "msg": "",
+    "data": {
+      "account": {
+        "id": { "$oid": "x" },
+        "name": "HSBC",
+        "type": "checking",
+        "balance": { "$numberDecimal": "175.20" }
+      }
+    }
+  }
+  ```
 
-```json
-{
-  "code": 0,
-  "msg": "",
-  "data": {}
-}
-```
+# Transactions
 
-### Update transaction
+## List transactions
 
-- `/api/transaction/updateTransaction`
-- paramaters
+- `/api/lsTransactions`
+- Parameters
 
-```json
-{
-  "trans_id": "x"
-  "acc_id": "x",
-  "date": "2022-01-01",
-  "payee": "Pizza Hut",
-  "credit": 502.2,
-  "debit": 0,
-  "notes": "2 pineapple pizzas.",
-  "category": "food",
-  "cleared": true
-}
+  - no parameters
+  - request type: GET
+
+- Return value
+  ```json
+  {
+    "code": 0,
+    "msg": "",
+    "data": {
+      "transactions": [
+        {
+          "_id": { "$oid": "63136a58d301518b82e6c72d" },
+          "account": "HSBC",
+          "date": { "$date": { "$numberLong": "1646755210000" } },
+          "payee": "Pizza Hut",
+          "credit": { "$numberDecimal": "420" },
+          "debit": { "$numberDecimal": "0" },
+          "notes": "2 pineapple pizzas.",
+          "category": "food",
+          "cleared": true
+        },
+        {
+          "_id": { "$oid": "63136a58d301518b82e6c72e" },
+          "account": "HSBC",
+          "date": { "$date": { "$numberLong": "1646755220000" } },
+          "payee": "Pizza Hut",
+          "credit": { "$numberDecimal": "69" },
+          "debit": { "$numberDecimal": "0" },
+          "notes": "Lemon Tea",
+          "category": "food",
+          "cleared": true
+        },
+        {
+          "_id": { "$oid": "63136a58d301518b82e6c72f" },
+          "account": "HSBC",
+          "date": { "$date": { "$numberLong": "1646755230000" } },
+          "payee": "Microsoft",
+          "credit": { "$numberDecimal": "0" },
+          "debit": { "$numberDecimal": "52000" },
+          "notes": "Monthly Income",
+          "category": "income",
+          "cleared": false
+        }
+      ]
+    }
+  }
+  ```
+
+## Get last X transactions
+
+- `/api/lastTransaction/x`
+- Parameters
+
+  - no parameters
+  - request type: GET
+
+- Return value
+  ```json
+  {
+    "code": 0,
+    "msg": "",
+    "data": {
+      "transactions": [
+        {
+          "_id": { "$oid": "63136a58d301518b82e6c72f" },
+          "account": "HSBC",
+          "date": { "$date": { "$numberLong": "1646755230000" } },
+          "payee": "Microsoft",
+          "credit": { "$numberDecimal": "0" },
+          "debit": { "$numberDecimal": "52000" },
+          "notes": "Monthly Income",
+          "category": "income",
+          "cleared": false
+        },
+        {
+          "_id": { "$oid": "63136a58d301518b82e6c72e" },
+          "account": "HSBC",
+          "date": { "$date": { "$numberLong": "1646755220000" } },
+          "payee": "Pizza Hut",
+          "credit": { "$numberDecimal": "69" },
+          "debit": { "$numberDecimal": "0" },
+          "notes": "Lemon Tea",
+          "category": "food",
+          "cleared": true
+        }
+      ]
+    }
+  }
+  ```
+
+## Get transaction
+
+- `/api/transactions/{id}`
+- Parameters
+
+  - no parameters
+  - request type: GET
+
+- Return value
+  ```json
+  {
+    "code": 0,
+    "msg": "",
+    "data": {
+      "transaction": {
+        "_id": { "$oid": "63136a58d301518b82e6c72f" },
+        "account": "HSBC",
+        "date": { "$date": { "$numberLong": "1646755230000" } },
+        "payee": "Microsoft",
+        "credit": { "$numberDecimal": "0" },
+        "debit": { "$numberDecimal": "52000" },
+        "notes": "Monthly Income",
+        "category": "income",
+        "cleared": false
+      }
+    }
+  }
+  ```
+
+## Add transaction
+
+- `/api/transactions`
+- Parameters
+
+  ```json
+  {
+    "account": "HSBC",
+    "date": { "$date": { "$numberLong": "1646755230000" } },
+    "payee": "Microsoft",
+    "credit": { "$numberDecimal": "0" },
+    "debit": { "$numberDecimal": "52000" },
+    "notes": "Monthly Income",
+    "category": "income",
+    "cleared": false
+  }
+  ```
+
+  - request type: POST
+
+- Return value
+  ```json
+  {
+    "code": 0,
+    "msg": "",
+    "data": {
+      "transaction": {
+        "_id": { "$oid": "63136a58d301518b82e6c72f" },
+        "account": "HSBC",
+        "date": { "$date": { "$numberLong": "1646755230000" } },
+        "payee": "Microsoft",
+        "credit": { "$numberDecimal": "0" },
+        "debit": { "$numberDecimal": "52000" },
+        "notes": "Monthly Income",
+        "category": "income",
+        "cleared": false
+      }
+    }
+  }
+  ```
+
+## Update transaction
+- `/api/transactions/{id}`
+- Parameters
+
+  ```json
+  {
+    "account": "HSBC",
+    "date": { "$date": { "$numberLong": "1646755230000" } },
+    "payee": "Microsoft",
+    "credit": { "$numberDecimal": "0" },
+    "debit": { "$numberDecimal": "52000" },
+    "notes": "Monthly Income",
+    "category": "income",
+    "cleared": false
+  }
+  ```
+
+  - request type: PUT
+
+- Return value
+  ```json
+  {
+    "code": 0,
+    "msg": "",
+    "data": {
+      "transaction": {
+        "_id": { "$oid": "63136a58d301518b82e6c72f" },
+        "account": "HSBC",
+        "date": { "$date": { "$numberLong": "1646755230000" } },
+        "payee": "Microsoft",
+        "credit": { "$numberDecimal": "0" },
+        "debit": { "$numberDecimal": "52000" },
+        "notes": "Monthly Income",
+        "category": "income",
+        "cleared": false
+      }
+    }
+  }
+  ```
+
+### Update transaction date
+- `/api/transactions/{id}/date`
+- Parameters
+
+  ```json
+  {
+    "date": { "$date": { "$numberLong": "1646755230000" } }
+  }
+  ```
+
+  - request type: PUT
+
+- Return value
+  ```json
+  {
+    "code": 0,
+    "msg": "",
+    "data": {
+      "transaction": {
+        "_id": { "$oid": "63136a58d301518b82e6c72f" },
+        "account": "HSBC",
+        "date": { "$date": { "$numberLong": "1646755230000" } },
+        "payee": "Microsoft",
+        "credit": { "$numberDecimal": "0" },
+        "debit": { "$numberDecimal": "52000" },
+        "notes": "Monthly Income",
+        "category": "income",
+        "cleared": false
+      }
+    }
+  }
+  ```
+
+### Update transaction payee
+- `/api/transactions/{id}/payee`
+- Parameters
+
+  ```json
+  {
+    "payee": "Microsoft"
+  }
+  ```
+
+  - request type: PUT
+
+- Return value
+  ```json
+  {
+    "code": 0,
+    "msg": "",
+    "data": {
+      "transaction": {
+        "_id": { "$oid": "63136a58d301518b82e6c72f" },
+        "account": "HSBC",
+        "date": { "$date": { "$numberLong": "1646755230000" } },
+        "payee": "Microsoft",
+        "credit": { "$numberDecimal": "0" },
+        "debit": { "$numberDecimal": "52000" },
+        "notes": "Monthly Income",
+        "category": "income",
+        "cleared": false
+      }
+    }
+  }
+  ```
+
+### Update transaction credit
+- `/api/transactions/{id}/credit`
+- Parameters
+
+  ```json
+  {
+    "credit": { "$numberDecimal": "0" }
+  }
+  ```
+
+  - request type: PUT
+
+- Return value
+  ```json
+  {
+    "code": 0,
+    "msg": "",
+    "data": {
+      "transaction": {
+        "_id": { "$oid": "63136a58d301518b82e6c72f" },
+        "account": "HSBC",
+        "date": { "$date": { "$numberLong": "1646755230000" } },
+        "payee": "Microsoft",
+        "credit": { "$numberDecimal": "0" },
+        "debit": { "$numberDecimal": "52000" },
+        "notes": "Monthly Income",
+        "category": "income",
+        "cleared": false
+      }
+    }
+  }
+  ```
+
+### Update transaction debit
+- `/api/transactions/{id}/debit`
+- Parameters
+
+  ```json
+  {
+    "debit": { "$numberDecimal": "52000" }
+  }
+  ```
+
+  - request type: PUT
+
+- Return value
+  ```json
+  {
+    "code": 0,
+    "msg": "",
+    "data": {
+      "transaction": {
+        "_id": { "$oid": "63136a58d301518b82e6c72f" },
+        "account": "HSBC",
+        "date": { "$date": { "$numberLong": "1646755230000" } },
+        "payee": "Microsoft",
+        "credit": { "$numberDecimal": "0" },
+        "debit": { "$numberDecimal": "52000" },
+        "notes": "Monthly Income",
+        "category": "income",
+        "cleared": false
+      }
+    }
+  }
+  ```
+
+### Update transaction notes
+- `/api/transactions/{id}/notes`
+- Parameters
+
+  ```json
+  {
+    "notes": "Monthly Income"
+  }
+  ```
+
+  - request type: PUT
+
+- Return value
+  ```json
+  {
+    "code": 0,
+    "msg": "",
+    "data": {
+      "transaction": {
+        "_id": { "$oid": "63136a58d301518b82e6c72f" },
+        "account": "HSBC",
+        "date": { "$date": { "$numberLong": "1646755230000" } },
+        "payee": "Microsoft",
+        "credit": { "$numberDecimal": "0" },
+        "debit": { "$numberDecimal": "52000" },
+        "notes": "Monthly Income",
+        "category": "income",
+        "cleared": false
+      }
+    }
+  }
+  ```
+
+### Update transaction category
+- `/api/transactions/{id}/category`
+- Parameters
+
+  ```json
+  {
+    "category": "income"
+  }
+  ```
+
+  - request type: PUT
+
+- Return value
+  ```json
+  {
+    "code": 0,
+    "msg": "",
+    "data": {
+      "transaction": {
+        "_id": { "$oid": "63136a58d301518b82e6c72f" },
+        "account": "HSBC",
+        "date": { "$date": { "$numberLong": "1646755230000" } },
+        "payee": "Microsoft",
+        "credit": { "$numberDecimal": "0" },
+        "debit": { "$numberDecimal": "52000" },
+        "notes": "Monthly Income",
+        "category": "income",
+        "cleared": false
+      }
+    }
+  }
+  ```
+
+### Update transaction cleared
+- `/api/transactions/{id}/cleared`
+- Parameters
+
+  ```json
+  {
+    "cleared": false
+  }
+  ```
+
+  - request type: PUT
+
+- Return value
+  ```json
+  {
+    "code": 0,
+    "msg": "",
+    "data": {
+      "transaction": {
+        "_id": { "$oid": "63136a58d301518b82e6c72f" },
+        "account": "HSBC",
+        "date": { "$date": { "$numberLong": "1646755230000" } },
+        "payee": "Microsoft",
+        "credit": { "$numberDecimal": "0" },
+        "debit": { "$numberDecimal": "52000" },
+        "notes": "Monthly Income",
+        "category": "income",
+        "cleared": false
+      }
+    }
+  }
+  ```
+
+### Delete transaction
+- `/api/transactions/{id}`
+- Parameters
+
+  - request type: DELETE
+
+- Return value
+  ```json
+  {
+    "code": 0,
+    "msg": "",
+    "data": {
+      "transaction": {
+        "_id": { "$oid": "63136a58d301518b82e6c72f" },
+        "account": "HSBC",
+        "date": { "$date": { "$numberLong": "1646755230000" } },
+        "payee": "Microsoft",
+        "credit": { "$numberDecimal": "0" },
+        "debit": { "$numberDecimal": "52000" },
+        "notes": "Monthly Income",
+        "category": "income",
+        "cleared": false
+      }
+    }
+  }
+  ```
+  
