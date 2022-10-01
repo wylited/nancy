@@ -94,7 +94,7 @@
 
 ## Get account
 
-- `/api/accounts/{name}`
+- `/api/accounts/{id}`
 - Parameters
 
   - request type: GET
@@ -117,8 +117,8 @@
 
 ### Get account sugar
 
-- `/api/accounts/{name}/type`
-- `/api/accounts/{name}/balance`
+- `/api/accounts/{id}/type`
+- `/api/accounts/{id}/balance`
 
 ## Add account
 
@@ -153,7 +153,7 @@
 
 ## Update account
 
-- `/api/accounts/{name}`
+- `/api/accounts/{id}`
 - Parameters
 
   ```json
@@ -184,7 +184,7 @@
 
 ## Delete account
 
-- `/api/accounts/{name}`
+- `/api/accounts/{id}`
 - Parameters
 
   - request type: DELETE
@@ -194,14 +194,7 @@
   {
     "code": 0,
     "msg": "",
-    "data": {
-      "account": {
-        "id": { "$oid": "x" },
-        "name": "HSBC",
-        "type": "checking",
-        "balance": { "$numberDecimal": "175.20" }
-      }
-    }
+    "data": {}
   }
   ```
 
@@ -209,7 +202,7 @@
 
 ## List transactions
 
-- `/api/lsTransactions`
+- `/api/accounts/{id}/lsTransactions`
 - Parameters
 
   - no parameters
@@ -262,7 +255,7 @@
 
 ## Get last X transactions
 
-- `/api/lastTransaction/x`
+- `/api/accounts/{id}/lsTransactions/{count}`
 - Parameters
 
   - no parameters
@@ -304,7 +297,7 @@
 
 ## Get transaction
 
-- `/api/transactions/{id}`
+- `/api/accounts/{id}/transactions/{id}`
 - Parameters
 
   - no parameters
@@ -332,18 +325,19 @@
   ```
 ## Get transaction sugar
 
-- `/api/transactions/{id}/account`
-- `/api/transactions/{id}/date`
-- `/api/transactions/{id}/payee`
-- `/api/transactions/{id}/credit`
-- `/api/transactions/{id}/debit`
-- `/api/transactions/{id}/notes`
-- `/api/transactions/{id}/category`
-- `/api/transactions/{id}/cleared`
+- `/api/accounts/{id}/transactions/{id}/type`
+- `/api/accounts/{id}/transactions/{id}/date`
+- `/api/accounts/{id}/transactions/{id}/payee`
+- `/api/accounts/{id}/transactions/{id}/credit`
+- `/api/accounts/{id}/transactions/{id}/debit`
+- `/api/accounts/{id}/transactions/{id}/notes`
+- `/api/accounts/{id}/transactions/{id}/category`
+- `/api/accounts/{id}/transactions/{id}/cleared`
+
 
 ## Add transaction
 
-- `/api/transactions`
+- `/api/accounts/{id}/transactions`
 - Parameters
 
   ```json
@@ -384,7 +378,7 @@
 
 ## Update transaction
 
-- `/api/transactions/{id}`
+- `/api/accounts/{id}/transactions/{id}`
 - Parameters
 
   ```json
@@ -424,18 +418,18 @@
   ```
 ## Update transaction sugar
 
-- `/api/transactions/{id}/account`
-- `/api/transactions/{id}/date`
-- `/api/transactions/{id}/payee`
-- `/api/transactions/{id}/credit`
-- `/api/transactions/{id}/debit`
-- `/api/transactions/{id}/notes`
-- `/api/transactions/{id}/category`
-- `/api/transactions/{id}/cleared`
+- `/api/accounts/{id}/transactions/{id}/type`
+- `/api/accounts/{id}/transactions/{id}/date`
+- `/api/accounts/{id}/transactions/{id}/payee`
+- `/api/accounts/{id}/transactions/{id}/credit`
+- `/api/accounts/{id}/transactions/{id}/debit`
+- `/api/accounts/{id}/transactions/{id}/notes`
+- `/api/accounts/{id}/transactions/{id}/category`
+- `/api/accounts/{id}/transactions/{id}/cleared`
 
 ### Delete transaction
 
-- `/api/transactions/{id}`
+- `/api/accounts/{id}/transactions/{id}`
 - Parameters
 
   - request type: DELETE
