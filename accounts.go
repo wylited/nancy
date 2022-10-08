@@ -5,13 +5,15 @@ import (
 	"log"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type Account struct {
-	id		string	`json:"id"`
-	Type	string	`json:"type"`
-	Balance	string	`json:"balance"`
+	id      string               `json:"id"`
+	Name    string               `json:"name"`
+	Type    string               `json:"type"`
+	Balance primitive.Decimal128 `json:"balance"`
 }
 
 // Return a list of all accounts
@@ -33,20 +35,28 @@ func listAccounts(client *mongo.Client) (acc []Account, err error) {
 }
 
 // Return an account
-func getAccount(client *mongo.Client, id string, part string) (acc Account, err error) {
+func getAccount(client *mongo.Client, name string, part string) (acc Account, err error) {
 	accounts := client.Database("configuration").Collection("accounts")
 
 	var account Account
-	if err := accounts.FindOne(context.TODO(), bson.M{"id": id}).Decode(&account); err != nil {
+	if err := accounts.FindOne(context.TODO(), bson.M{"name": name}).Decode(&account); err != nil {
 		log.Println(err)
 		return account, err
 	}
 
-	if part == "id" { return Account{id: account.id}, nil } else if part == "type" { return Account{Type: account.Type}, nil } else if part == "balance" { return Account{Balance: account.Balance}, nil } else { return account, nil }
+	if part == "id" {
+		return Account{id: account.id}, nil
+	} else if part == "type" {
+		return Account{Type: account.Type}, nil
+	} else if part == "balance" {
+		return Account{Balance: account.Balance}, nil
+	} else {
+		return account, nil
+	}
 
 }
 
-// Adds an account to MongoDB and returns an 
+// Adds an account to MongoDB and returns an
 // addAccount adds an account to the database
 func addAccount(client *mongo.Client, account Account) (err error) {
 	accounts := client.Database("configuration").Collection("accounts")
@@ -55,7 +65,7 @@ func addAccount(client *mongo.Client, account Account) (err error) {
 		return err
 	}
 
-	if err := client.Database("accounts").CreateCollection(context.TODO(), account.id); err != nil {
+	if err := client.Database("accounts").CreateCollection(context.TODO(), account.Name); err != nil {
 		return err
 	}
 

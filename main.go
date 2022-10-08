@@ -20,7 +20,7 @@ import (
 // Make a config file for these two.
 // possibly using viper.
 const uri = "mongodb+srv://wylited:rFv5thb-@nancy.qlvkxdl.mongodb.net/test"
-const port = "8080"
+const port = ":8080"
 
 type Nancy struct {
 	uri    string
