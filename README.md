@@ -1,12 +1,27 @@
-# nancy-backend
-A personal, local first Finance Management System (FMS). Designed to help an average human being track their spendings and recognize habits
+# Nancy 
+A personal, local first Finance Management System (FMS). Designed to help an average human being track their spendings and recognize habits easily.
 
-This is the backend api working all the logic and connecting to the database and providing an http API using GIN.
+---
 
-## API Specficitation.
-[API](https://github.com/wylited/nancy/blob/main/API.md)
+Nancy tracks your finances using a credit debit transaction system per account.
 
-## Features
-Works on an account based system. Where each account has debit and credit.
+This helps outline the flow of your money in a simple way, and doesn't aim to do more than that.
 
-Makes use of MongoDB to store timeline based data.
+## Outline
+```
+.
+│   >  monorepo hosting all of Nancy's code.
+├── api
+│   └ The backend api for Nancy.
+│
+├── gui
+│   └ The default GUI provided as a user frotend for Nancy.
+│
+├── cli
+│   └ The default CLI provided as a user frontend for Nancy.
+│
+└── examples
+    ├ Examples of how to use Nancy. 
+    └ Focusing on hacking Nancy for personal use.
+    
+```
