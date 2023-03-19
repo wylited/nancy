@@ -1,0 +1,4 @@
+.vscode/
+api/target/
+server/target/
+server/Cargo.lock
