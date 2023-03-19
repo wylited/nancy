@@ -1,0 +1,11 @@
+{
+  "_id": { "$oid": "63136a58d301518b82e6c72d" },
+  "account": "HSBC",
+  "date": { "$date": { "$numberLong": "1646755200000" } },
+  "payee": "Pizza Hut",
+  "credit": { "$numberDecimal": "502.20" },
+  "debit": { "$numberDecimal": "0" },
+  "notes": "2 pineapple pizzas.",
+  "category": "food",
+  "cleared": true
+}
