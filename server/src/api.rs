@@ -89,7 +89,7 @@ impl Categories {
     pub fn get_category_by_name(&self, name: &str) -> Option<&u64> {
         self.categories
             .iter()
-            .find(|(_, v)| v == &&name)
+            .find(|(_, v)| v == &name)
             .map(|(k, _)| k)
     }
 

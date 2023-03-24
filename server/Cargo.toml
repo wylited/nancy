@@ -13,6 +13,7 @@ tokio = { version = "1.22.0", features = ["full"] }
 surrealdb = "1.0.0-beta.8"
 anyhow = "1.0.68"
 axum = "0.6.4"
-edgedb-tokio = "0.3.0"
-edgedb-derive = "0.4.0"
-edgedb-protocol = "0.4.0"
+# get edgedb packages from the git https://github.com/edgedb/edgedb-rust
+edgedb-tokio = { git = "https://github.com/edgedb/edgedb-rust" }
+edgedb-derive = { git = "https://github.com/edgedb/edgedb-rust" }
+edgedb-protocol = { git = "https://github.com/edgedb/edgedb-rust" }

@@ -5,10 +5,9 @@ pub struct Database {
     db: Client
 }
 
-#[derive(Queryable, Debug)]
+#[derive(Queryable)]
 struct Account {
     name: String,
-    age: i32,
 }
 
 impl Database {
@@ -27,7 +26,7 @@ impl Database {
             &(),
         ).await?;
 
-        println!("Accounts: {:#?}", accounts);
+        println!("Accounts: {}", accounts.len());
 
         Ok(())
     }
