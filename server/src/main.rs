@@ -1,8 +1,8 @@
-pub mod db;
-
 use anyhow::{Result};
 use axum::{routing::get, Router, response::IntoResponse, Json, extract::State};
 use edgedb_derive::Queryable;
+use edgedb_protocol::model::{Uuid, Datetime};
+use serde::{Serialize, Deserialize};
 use std::net::SocketAddr;
 
 #[derive(Clone)]
@@ -10,9 +10,37 @@ pub struct Db {
     pub client: edgedb_tokio::Client
 }
 
-#[derive(Queryable)]
+#[derive(Queryable, Deserialize, Serialize)]
 pub struct Account {
+    id: Uuid,
+    balance: f32,
     name: String,
+    // account_types: Vec<AccountType>,
+    // transactions: Vec<Transaction>,
+}
+
+#[derive(Queryable)]
+// how do i make serde deserialize and serialze work on this?
+pub struct Transaction {
+    id: Uuid,
+    credit: f32,
+    debit: f32,
+    notes: String,
+    payee: String,
+    cleared: bool,
+    date: Datetime,
+    description: String,
+    // categorys: Vec<Category>,
+}
+
+#[derive(Queryable, Deserialize, Serialize)]
+pub struct AccountType {
+    name: String
+}
+
+#[derive(Queryable, Deserialize, Serialize)]
+pub struct Category {
+    name: String
 }
 
 #[tokio::main]
@@ -46,5 +74,18 @@ pub async fn get_accounts(State(db): State<Db>) -> impl IntoResponse {
         Vec::new()
     });
     
-    Json(accounts.iter().map(|a| a.name.clone()).collect::<Vec<String>>())
+    Json(accounts)
+}
+
+
+
+pub async fn add_account(State(db): State<Db>, Json(account): Json<Account>){
+    let accounts = db.client.query_json(
+        &format!("INSERT Account {{ name := {}, balance := {} }}", account.name, account.balance),
+        &()
+    ).await;
+
+    if accounts.is_err() {
+        println!("Error: {}", accounts.err().unwrap());
+    }
 }
