@@ -1,12 +1,13 @@
 use edgedb_derive::Queryable;
 use edgedb_tokio::Client;
 
+#[derive(Debug)]
 pub struct Database {
-    db: Client
+    pub client: Client
 }
 
-#[derive(Queryable)]
-struct Account {
+#[derive(Queryable, Debug)]
+pub struct Account {
     name: String,
 }
 
@@ -15,19 +16,17 @@ impl Database {
         let conn = edgedb_tokio::create_client().await?;
         Ok(
             Database {
-                db: conn
+                client: conn
             }
         )
     }
 
-    pub async fn get_accounts(&self) -> Result<(), edgedb_tokio::Error>{
-        let accounts = self.db.query::<Account, _>(
+    pub async fn get_accounts(&self) -> Result<Vec<Account>, edgedb_tokio::Error>{
+        let accounts = self.client.query::<Account, _>(
             "SELECT Account {name}",
             &(),
         ).await?;
 
-        println!("Accounts: {}", accounts.len());
-
-        Ok(())
+        Ok(accounts)
     }
 }
