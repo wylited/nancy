@@ -1,7 +1,7 @@
 use anyhow::{Result};
 use axum::{routing::get, Router, response::IntoResponse, Json, extract::State};
 use edgedb_derive::Queryable;
-use edgedb_protocol::{model::{Uuid, Datetime}};
+use edgedb_protocol::model::{Uuid, Datetime};
 use serde::{Serialize, Deserialize};
 use std::net::SocketAddr;
 
@@ -12,10 +12,9 @@ pub struct Db {
 
 #[derive(Queryable, Deserialize, Serialize)]
 pub struct Account {
+    id: Uuid,
     balance: f32,
     name: String,
-
-    // id: Uuid,
     // account_types: Vec<AccountType>,
     // transactions: Vec<Transaction>,
 }
@@ -68,7 +67,7 @@ pub async fn root() -> impl IntoResponse {
 
 pub async fn get_accounts(State(db): State<Db>) -> impl IntoResponse {
     let accounts = db.client.query::<Account, _>(
-        "SELECT Account {name, balance}",
+        "SELECT Account {name}",
         &(),
     ).await.unwrap_or_else(|e| {
         println!("Error: {}", e);
@@ -76,4 +75,17 @@ pub async fn get_accounts(State(db): State<Db>) -> impl IntoResponse {
     });
     
     Json(accounts)
+}
+
+
+
+pub async fn add_account(State(db): State<Db>, Json(account): Json<Account>){
+    let accounts = db.client.query_json(
+        &format!("INSERT Account {{ name := {}, balance := {} }}", account.name, account.balance),
+        &()
+    ).await;
+
+    if accounts.is_err() {
+        println!("Error: {}", accounts.err().unwrap());
+    }
 }
