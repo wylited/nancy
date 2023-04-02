@@ -1,10 +1,14 @@
 module default {
     type Account {
         required property name         -> str;
-        required property balance      -> float32;
+        required property balance      -> float32
         
         multi link accounttype -> AccountType;
         multi link transactions -> Transactions;
+    }
+
+    type AccountType {
+        required property name -> str;
     }
 
     type Transactions {
@@ -16,10 +20,6 @@ module default {
         multi link category -> Category;
 
         property notes -> str
-    }
-
-    type AccountType {
-        required property name -> str;
     }
 
     type Category {

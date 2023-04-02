@@ -1,9 +1,8 @@
 use anyhow::{Result};
-use axum::{routing::get, Router, response::IntoResponse, Json, extract::State};
+use axum::{routing::get, Router, response::IntoResponse, Json, extract::{State, Query}};
 use edgedb_derive::Queryable;
-use edgedb_protocol::model::{Uuid, Datetime};
 use serde::{Serialize, Deserialize};
-use std::net::SocketAddr;
+use std::{net::SocketAddr, collections::HashMap};
 
 #[derive(Clone)]
 pub struct Db {
@@ -12,31 +11,29 @@ pub struct Db {
 
 #[derive(Queryable, Deserialize, Serialize)]
 pub struct Account {
-    id: Uuid,
     balance: f32,
     name: String,
-    // account_types: Vec<AccountType>,
-    // transactions: Vec<Transaction>,
-}
-
-#[derive(Queryable)]
-// how do i make serde deserialize and serialze work on this?
-pub struct Transaction {
-    id: Uuid,
-    credit: f32,
-    debit: f32,
-    notes: String,
-    payee: String,
-    cleared: bool,
-    date: Datetime,
-    description: String,
-    // categorys: Vec<Category>,
+    accounttype: Vec<AccountType>,
+    // transactions: Vec<Transactions>,
 }
 
 #[derive(Queryable, Deserialize, Serialize)]
 pub struct AccountType {
     name: String
 }
+
+#[derive(Queryable, Deserialize, Serialize)]
+pub struct Transactions {
+    cleared: bool,
+    credit: f32,
+    debit: f32,
+    // date: String, //should work as long as its iso8601
+    payee: String,
+    category: Vec<Category>,
+
+    notes: Option<String>,
+}
+
 
 #[derive(Queryable, Deserialize, Serialize)]
 pub struct Category {
@@ -50,7 +47,10 @@ async fn main() -> Result<()> {
 
     let router = Router::new()
         .route("/api", get(root))
-        .route("/api/accounts", get(get_accounts))
+        .route("/api/accounts", get(get_accounts).post(add_account))
+        .route("/api/accounttypes", get(get_accounttypes))
+        .route("/api/categories", get(get_categories))
+        .route("/api/transactions", get(get_transactions))
         .with_state(db);
 
 
@@ -66,8 +66,8 @@ pub async fn root() -> impl IntoResponse {
 }
 
 pub async fn get_accounts(State(db): State<Db>) -> impl IntoResponse {
-    let accounts = db.client.query::<Account, _>(
-        "SELECT Account {name}",
+    let accounts: Vec<Account> = db.client.query(
+        "SELECT Account {balance, name, accounttype:{name}};",
         &(),
     ).await.unwrap_or_else(|e| {
         println!("Error: {}", e);
@@ -77,15 +77,53 @@ pub async fn get_accounts(State(db): State<Db>) -> impl IntoResponse {
     Json(accounts)
 }
 
+pub async fn get_accounttypes(State(db): State<Db>) -> impl IntoResponse {
+    let account_types: Vec<AccountType> = db.client.query(
+        "SELECT AccountType.name", &()
+    ).await.unwrap_or_else( |e| {
+        println!("Error: {}", e);
+        Vec::new()
+    });
 
+    Json(account_types)
+}
 
-pub async fn add_account(State(db): State<Db>, Json(account): Json<Account>){
-    let accounts = db.client.query_json(
-        &format!("INSERT Account {{ name := {}, balance := {} }}", account.name, account.balance),
-        &()
+pub async fn get_categories(State(db): State<Db>) -> impl IntoResponse {
+    let categories: Vec<Category> = db.client.query(
+        "SELECT Category {name}", &()
+    ).await.unwrap_or_else( |e| {
+        println!("Error: {}", e);
+        Vec::new()
+    });
+
+    Json(categories)
+}
+
+pub async fn get_transactions(State(db): State<Db>) -> impl IntoResponse {
+    let transactions: Vec<Transactions> = db.client.query(
+        "SELECT Transactions {cleared, credit, debit, payee, category:{name}, notes}", &()
+    ).await.unwrap_or_else( |e| {
+        println!("Error: {}", e);
+        Vec::new()
+    });
+
+    Json(transactions)
+}
+
+pub async fn add_account(State(db): State<Db>, Query(params): Query<HashMap<String, String>>) -> impl IntoResponse {
+    let name = params.get("name").unwrap_or(&String::from("")).to_string();
+    let balance = params.get("balance").unwrap_or(&String::from("")).to_string();
+    println!("name: {}, balance: {}", name, balance);
+
+    let result = db.client.query_json(
+        "INSERT Account { balance := <std::float32>$0, name := <std::str>$1 };",
+        &(balance, name),
     ).await;
 
-    if accounts.is_err() {
-        println!("Error: {}", accounts.err().unwrap());
+    if let Err(e) = result {
+        println!("Error: {}", e);
+        return Json("Error")
     }
+
+    Json("Success")
 }
