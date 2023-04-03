@@ -112,7 +112,7 @@ pub async fn get_transactions(State(db): State<Db>) -> impl IntoResponse {
 
 pub async fn add_account(State(db): State<Db>, Query(params): Query<HashMap<String, String>>) -> impl IntoResponse {
     let name = params.get("name").unwrap_or(&String::from("")).to_string();
-    let balance = params.get("balance").unwrap_or(&String::from("")).to_string();
+    let balance: f32 = params.get("balance").unwrap_or(&String::from("")).to_string().parse::<f32>().unwrap_or(0.0);
     println!("name: {}, balance: {}", name, balance);
 
     let result = db.client.query_json(
