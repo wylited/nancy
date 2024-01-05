@@ -1,6 +1,0 @@
-{
-  "_id": { "$oid": "631367a6d301518b82e6c70d" },
-  "name": "HSBC",
-  "type": "checking",
-  "balance": { "$numberDecimal": "175.20" }
-}
