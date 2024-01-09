@@ -1,23 +1,6 @@
 // @generated automatically by Diesel CLI.
 
 diesel::table! {
-    users (id) {
-        id -> Integer,
-        name -> Text,
-        admin -> Bool,
-        password -> Text,
-    }
-}
-
-diesel::table! {
-    accounts (id) {
-        id -> Integer,
-        name -> Text,
-        category -> Text,
-    }
-}
-
-diesel::table! {
     transactions (id) {
         id -> Integer,
         cleared -> Bool,
@@ -26,6 +9,10 @@ diesel::table! {
         payee -> Text,
         payer -> Text,
         category -> Text,
-        note -> Text,
+        note -> Nullable<Text>,
+        date -> Timestamp,
+        cleardate -> Nullable<Timestamp>,
+        account_id -> Integer,
+        user_id -> Integer,
     }
 }
